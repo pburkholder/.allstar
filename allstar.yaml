@@ -1,4 +1,5 @@
 baseConfig: cloud-gov/.allstar
 optConfig:
   optOutStrategy: true
+  optOutForkedRepos: true
 issueFooter: Created by pburkholder/.allstar and GSA-TTS/.allstar
