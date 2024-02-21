@@ -1,4 +1,4 @@
-baseConfig: GSA-TTS/.allstar
+baseConfig: cloud-gov/.allstar
 optConfig:
   optOutStrategy: true
 issueFooter: Created by pburkholder/.allstar and GSA-TTS/.allstar
