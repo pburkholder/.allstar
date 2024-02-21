@@ -1,4 +1,4 @@
-baseConfig: gsa-tts/.allstar
+baseConfig: GSA-TTS/.allstar
 optConfig:
   optOutStrategy: true
 issueFooter: Created by pburkholder/.allstar and GSA-TTS/.allstar
