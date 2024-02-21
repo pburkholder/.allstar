@@ -1,4 +1,4 @@
-baseConfig: cloud-gov/.allstar
+baseConfig: GSA-TTS/.allstar
 optConfig:
   optOutStrategy: true
   optOutForkedRepos: true
