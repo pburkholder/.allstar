@@ -15,6 +15,8 @@ jobs:
     container: ghcr.io/ossf/allstar:v4.0-busybox
     environment: prod
     steps:
+      - name: Run check
+        run: echo foobar | sed -e 's/bar/bam/'
       - name: Run AllStar Policy Check
         env:
           # Ping open issues every week (168 hours)
@@ -22,7 +24,7 @@ jobs:
           KEY_SECRET: direct
           APP_ID: ${{ vars.APP_ID }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-        run: /ko-app/allstar -once | tee allstar-report.txt
+        run: "/ko-app/allstar -once | tee allstar-report.txt"
       - name: Archive AllStar Results
         uses: actions/upload-artifact@v4
         with:
