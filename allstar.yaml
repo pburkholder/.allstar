@@ -1,5 +1,4 @@
-baseConfig: GSA-TTS/.allstar
-optOutForkedRepos: true
+#baseConfig: GSA-TTS/.allstar
 optConfig:
   optOutStrategy: true
   optOutForkedRepos: true
