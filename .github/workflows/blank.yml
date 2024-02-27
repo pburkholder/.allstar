@@ -18,7 +18,7 @@ jobs:
 #      - name: Create Artifact Directoy
 #        run: mkdir ./artifacts
       - name: Run check
-        run: echo foobar | sed -e 's/bar/bam/' | tee foobam.txt
+        run: touch foobam.txt
       - name: Run AllStar Policy Check
         env:
           # Ping open issues every week (168 hours)
