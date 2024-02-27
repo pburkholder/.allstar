@@ -15,10 +15,10 @@ jobs:
     container: ghcr.io/ossf/allstar:v4.0-busybox
     environment: prod
     steps:
-      - name: Create Artifact Directoy
-        run: mkdir ./artifacts
+#      - name: Create Artifact Directoy
+#        run: mkdir ./artifacts
       - name: Run check
-        run: echo foobar | sed -e 's/bar/bam/' | tee ./artifacts/foobam.txt
+        run: echo foobar | sed -e 's/bar/bam/' | tee foobam.txt
       - name: Run AllStar Policy Check
         env:
           # Ping open issues every week (168 hours)
