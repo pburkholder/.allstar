@@ -17,15 +17,7 @@ jobs:
     steps:
       - name: Create Artifact Directoy
         run: mkdir /home/nonroot/artifacts
-      - name: Run AllStar Policy Check
-        env:
-          # Ping open issues every week (168 hours)
-          NOTICE_PING_DURATION_HOURS: 168
-          KEY_SECRET: direct
-          APP_ID: ${{ vars.APP_ID }}
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-        run: /ko-app/allstar -once | tee /home/nonroot/artifacts/allstar-report.txt
-      - name: Archive AllStar Results
+        run: date > /home/nonroot/artifacts/date.out
         uses: actions/upload-artifact@v4
         with:
           name: allstar-artifacts
