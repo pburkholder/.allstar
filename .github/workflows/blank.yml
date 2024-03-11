@@ -15,9 +15,9 @@ jobs:
     container: ghcr.io/ossf/allstar:v4.0-busybox
     environment: prod
     steps:
-      - run: mkdir /home/nonroot/artifacts
-      - run: date > /home/nonroot/artifacts/date.out
-      - uses: actions/upload-artifact@v4
-        with:
-          name: allstar-artifacts
-          path: /home/nonroot/artifacts/
+    - run: mkdir -p /tmp/artifact
+    - run: echo hello > /tmp/artifact/world.txt
+    - uses: actions/upload-artifact@v4
+      with:
+        name: my-artifact
+        path: /tmp/artifact/world.txt    
