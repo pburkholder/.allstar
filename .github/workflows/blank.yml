@@ -12,7 +12,9 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     # Use chainguard/busybox based image - It has a tail.
-    container: ghcr.io/ossf/allstar:v4.0-busybox
+    container: 
+      image: ghcr.io/ossf/allstar:v4.0-busybox
+      options: --user root
     environment: prod
     steps:
     - run: mkdir -p /tmp/artifact
