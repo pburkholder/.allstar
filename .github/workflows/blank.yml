@@ -17,7 +17,7 @@ jobs:
     steps:
     - run: mkdir -p /tmp/artifact
     - run: echo hello > /tmp/artifact/world.txt
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1
       with:
         name: my-artifact
         path: /tmp/artifact/world.txt    
