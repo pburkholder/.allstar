@@ -1,5 +1,7 @@
 #baseConfig: GSA-TTS/.allstar
 optConfig:
-  optOutStrategy: true
+  optOutStrategy: false
   optOutForkedRepos: true
+  optInRepos:
+  - pburkholder-dev
 issueFooter: Created by pburkholder/.allstar and GSA-TTS/.allstar
