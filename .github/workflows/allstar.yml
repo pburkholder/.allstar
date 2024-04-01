@@ -17,7 +17,8 @@ jobs:
     container: 
       # although AllStar signs their container with co-sign, there's no indication GitHub actions
       # checks Docker signatures, so I'm specifying AllStar by SHA.
-      image: ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c36445 
+      #image: ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c36445 
+      image: ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c364a4
       options: --user root
     environment: prod
     env:
