@@ -17,14 +17,18 @@ jobs:
     container: 
       # although AllStar signs their container with co-sign, there's no indication GitHub actions
       # checks Docker signatures, so I'm specifying AllStar by SHA.
-      #image: ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c36445 
-      image: ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c364a4
+      image: ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c36445 
       options: --user root
     environment: prod
     env:
       ARTIFACT_DIR: /tmp/artifacts
     steps:
-      - name: Create Artifact Directoy
+      - name: Verify Container
+        uses: sigstore/cosign-installer@e1523de7571e31dbe865fd2e80c5c7c23ae71eb4 # v3.4.0
+        run: |
+          cosign version
+          cosign verify  ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c36445 
+      i name: Create Artifact Directoy
         run: mkdir $ARTIFACT_DIR 
       - name: Run AllStar Policy Check
         env:
