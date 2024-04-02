@@ -1,5 +1,11 @@
 # https://github.blog/2021-12-06-safeguard-container-signing-capability-actions/
 
+# We could verify the AllStar image with something like:
+#   cosign verify ghcr.io/ossf/allstar:v4.0-busybox \
+#     --certificate-identity-regexp  "https://github.com/ossf/allstar/.github/workflows/release.yaml"  
+#     --certificate-oidc-issuer https://token.actions.githubusercontent.com
+# but it's a fairly uninteresting verification since it only shows the image was 
+# generated through GitHub Actions, not signed by one of the committers.
 ---
 name: AllStar Enforcement Action
 
@@ -15,19 +21,13 @@ jobs:
     runs-on: ubuntu-latest
     # Use chainguard/busybox based image - It has a tail.
     container: 
-      # although AllStar signs their container with co-sign, there's no indication GitHub actions
-      # checks Docker signatures, so I'm specifying AllStar by SHA.
+      # Specifying AllStar by SHA since tags are mutable. We don't verify the signature (see above)
       image: ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c36445 
       options: --user root
     environment: prod
     env:
       ARTIFACT_DIR: /tmp/artifacts
     steps:
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@e1523de7571e31dbe865fd2e80c5c7c23ae71eb4
-      - name: Verify image
-        run: |
-          cosign verify ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c36445 
       - name: Create Artifact Directoy
         run: mkdir $ARTIFACT_DIR 
       - name: Run AllStar Policy Check
