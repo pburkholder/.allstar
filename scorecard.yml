@@ -1,7 +1,7 @@
 # Scorecard Policy - See https://github.com/ossf/scorecard/blob/main/docs/checks.md
-#optConfig:
+optConfig:
 #  disableRepoOverride: false
-#  optOutStrategy: true
+  optOutStrategy: true
 #  optOutArchivedRepos: true
 #  optInRepos:
 #  - pburkholder-dev
