@@ -5,3 +5,5 @@ optConfig:
 action: issue
 # Policies
 # Starting with the defaults - https://github.com/ossf/scorecard/blob/main/docs/checks/internal/checks.yaml
+checks:
+  - Maintained
