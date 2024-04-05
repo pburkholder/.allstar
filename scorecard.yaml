@@ -13,4 +13,3 @@ action: issue
 # - Webhooks (experimental)
 checks: # AllStar already call scorecard for Binary-Artifacts, Branch-Protection,
   - Code-Review
-  - Maintained
