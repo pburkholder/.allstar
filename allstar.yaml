@@ -1,7 +1,10 @@
 #baseConfig: GSA-TTS/.allstar
 optConfig:
-  optOutStrategy: true
+  optOutStrategy: false
   optOutForkedRepos: true
   optInRepos:
   - pburkholder-dev
+  - One-offs
+  - dotfiles
+  - cf-iife
 issueFooter: Created by pburkholder/.allstar and GSA-TTS/.allstar
