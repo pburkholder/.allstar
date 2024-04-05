@@ -3,7 +3,6 @@ optConfig:
   disableRepoOverride: false
   optOutStrategy: true
   optOutArchivedRepos: true
-  optOutForkedRepos: true
   optInRepos:
   - pburkholder-dev
   - One-offs

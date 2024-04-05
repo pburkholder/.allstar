@@ -1,10 +1,11 @@
 #baseConfig: GSA-TTS/.allstar
 optConfig:
   optOutStrategy: false
-  optOutForkedRepos: true
+  # optOutForkedRepos: true
   optInRepos:
   - pburkholder-dev
   - One-offs
   - dotfiles
   - cf-iife
+  - intro-to-o11y-python
 issueFooter: Created by pburkholder/.allstar and GSA-TTS/.allstar
