@@ -1,6 +1,6 @@
 #baseConfig: GSA-TTS/.allstar
 optConfig:
-  optOutStrategy: false
+  optOutStrategy: true
   optOutForkedRepos: true
   optInRepos:
   - pburkholder-dev
