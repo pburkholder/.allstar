@@ -4,6 +4,11 @@ optConfig:
   optOutStrategy: true
   optOutArchivedRepos: true
   optOutForkedRepos: true
+  optInRepos:
+  - pburkholder-dev
+  - One-offs
+  - dotfiles
+  - cf-iife
 action: issue
 # Policies
 # This are documented here: https://github.com/ossf/scorecard/blob/main/docs/checks/internal/checks.yaml
