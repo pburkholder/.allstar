@@ -33,6 +33,8 @@ jobs:
     steps:
       - name: Create Artifact Directory
         run: mkdir $ARTIFACT_DIR
+      - name: Update path with tool cache
+        run: echo "$RUNNER_TOOL_CACHE/jq" >> $GITHUB_PATH
       - name: 'Setup jq'
         uses: dcarbone/install-jq-action@v2
       - name: Run AllStar Policy Check
