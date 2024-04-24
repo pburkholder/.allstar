@@ -11,5 +11,5 @@ action: issue
 # - Code-Review, Dependency-Update-Tool, Maintained
 # - Signed-Releases, Token-Permissions, Vulnerabilities
 # - Webhooks (experimental)
-checks: # AllStar already call scorecard for Binary-Artifacts, Branch-Protection,
+checks: 
   - Code-Review
