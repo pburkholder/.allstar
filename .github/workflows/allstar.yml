@@ -36,10 +36,10 @@ jobs:
       - name: Update path with tool cache
         run: |
           echo GITHUB_PATH
-          cat GITHUB_PATH
+          cat $GITHUB_PATH
           echo "$RUNNER_TOOL_CACHE/jq" >> $GITHUB_PATH
           echo GITHUB_PATH
-          cat GITHUB_PATH
+          cat $GITHUB_PATH
       - name: 'Setup jq'
         uses: dcarbone/install-jq-action@v2
       - name: Run AllStar Policy Check
