@@ -17,19 +17,6 @@ on:
       - main
   schedule:
     - cron: '7 * * * *'
-  workflow_dispatch:
-    inputs:
-      version:
-        type: string
-        required: false
-        description: 'Version of jq to install'
-        default: '1.7'
-      force:
-        type: boolean
-        required: false
-        description: 'Do not check for existing jq installation before continuing.'
-        default: false
-
 
 jobs:
   deployment:
@@ -46,6 +33,8 @@ jobs:
     steps:
       - name: Create Artifact Directory
         run: mkdir $ARTIFACT_DIR
+      - name: 'Setup jq'
+        uses: dcarbone/install-jq-action@v2
       - name: Run AllStar Policy Check
         env:
           # Ping open issues every week (168 hours)
@@ -59,8 +48,6 @@ jobs:
         run: | 
           /ko-app/allstar -once > >(tee -a $ARTIFACT_DIR/allstar.out) 2> >(tee -a $ARTIFACT_DIR/allstar.log >&2);
             - name: 'Setup jq'
-      - name: Install JQ
-        uses: dcarbone/install-jq-action@v2
       - name: Summarize Results
         run: |
           grep '^{}' $ARTIFACT_DIR/allstar.out | 
