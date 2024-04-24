@@ -19,7 +19,7 @@ on:
     - cron: '7 * * * *'
 
 jobs:
-  deployment:
+  scan:
     runs-on: ubuntu-latest
     # Use chainguard/busybox based image - It has a tail for entrypoint
     container: 
@@ -33,15 +33,6 @@ jobs:
     steps:
       - name: Create Artifact Directory
         run: mkdir $ARTIFACT_DIR
-      - name: Update path with tool cache
-        run: |
-          echo GITHUB_PATH
-          cat $GITHUB_PATH
-          echo "$RUNNER_TOOL_CACHE/jq" >> $GITHUB_PATH
-          echo GITHUB_PATH
-          cat $GITHUB_PATH
-      - name: 'Setup jq'
-        uses: dcarbone/install-jq-action@v2
       - name: Run AllStar Policy Check
         env:
           # Ping open issues every week (168 hours)
@@ -54,21 +45,27 @@ jobs:
         # AllStar emits logs on stderr, not stdout
         run: | 
           /ko-app/allstar -once > >(tee -a $ARTIFACT_DIR/allstar.out) 2> >(tee -a $ARTIFACT_DIR/allstar.log >&2);
-            - name: 'Setup jq'
-      - name: Summarize Results
-        run: |
-          grep '^{}' $ARTIFACT_DIR/allstar.out | 
-            jq --slurp \
-            '[.[] | select(.enabled == true and
-            .message == "Policy run result." and .result == false) ] |
-            [ group_by(.area)[] | {(.[0].area): [ .[] | .repo]}]' | tee $ARTIFACT_DIR/by_area.json
-          grep '^{}' $ARTIFACT_DIR/allstar.out | 
-            jq --slurp \
-            '[.[] | select(.enabled == true and
-            .message == "Policy run result." and .result == false) ] |
-            [ group_by(.repo[] | {(.[0].repo): [ .[] | .area]}]' | tee $ARTIFACT_DIR/by_repo.json
       - name: Archive AllStar Results
         uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1
         with:
           name: allstar-artifacts
           path: ${{ env.ARTIFACT_DIR }}
+
+  analyze:
+    steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: allstar-artifacts
+      - name: Summarize Results
+        run: |
+          grep '^{}' $GITHUB_WORKSPACE/allstar.out | 
+            jq --slurp \
+            '[.[] | select(.enabled == true and
+            .message == "Policy run result." and .result == false) ] |
+            [ group_by(.area)[] | {(.[0].area): [ .[] | .repo]}]' 
+          grep '^{}' $GITHUB_WORKSPACE/allstar.out | 
+            jq --slurp \
+            '[.[] | select(.enabled == true and
+            .message == "Policy run result." and .result == false) ] |
+            [ group_by(.repo[] | {(.[0].repo): [ .[] | .area]}]' 
