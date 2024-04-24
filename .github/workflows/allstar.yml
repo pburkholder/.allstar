@@ -38,6 +38,7 @@ jobs:
           echo path $PATH
           echo gh path $GITHUB_PATH
           echo ":$RUNNER_TOOL_CACHE/jq" >> $GITHUB_PATH
+          echo ":$RUNNER_TOOL_CACHE/jq" >> PATH
           echo path $PATH
           echo gh path $GITHUB_PATH
       - name: 'Setup jq'
