@@ -17,6 +17,19 @@ on:
       - main
   schedule:
     - cron: '7 * * * *'
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        required: false
+        description: 'Version of jq to install'
+        default: '1.7'
+      force:
+        type: boolean
+        required: false
+        description: 'Do not check for existing jq installation before continuing.'
+        default: false
+
 
 jobs:
   deployment:
