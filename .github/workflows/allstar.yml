@@ -61,7 +61,7 @@ jobs:
       - name: Download scan artifacts
         uses: actions/download-artifact@v4
         with:
-          name: allstar-artifacts
+          name: allstar-scan
       - name: Make artifacts directory
         run: mkdir $ARTIFACT_DIR
       - name: Summarize Results by Check
@@ -82,4 +82,7 @@ jobs:
         uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1
         with:
           name: allstar-results
+
+
+
           path: ${{ env.ARTIFACT_DIR }}
