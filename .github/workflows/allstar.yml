@@ -19,6 +19,8 @@ on:
     - cron: '7 * * * *'
 
 jobs:
+  env:
+    ARTIFACT_DIR: /tmp/artifacts
   scan:
     runs-on: ubuntu-latest
     # Use chainguard/busybox based image - It has a tail for entrypoint
@@ -28,8 +30,7 @@ jobs:
       # Running as root within unprivileged container does not violate STIGs, etc.
       options: --user root
     environment: prod
-    env:
-      ARTIFACT_DIR: /tmp/artifacts
+    
     steps:
       - name: Create Artifact Directory
         run: mkdir $ARTIFACT_DIR
@@ -56,16 +57,23 @@ jobs:
     needs: scan
     environment: prod
     steps:
-      - name: Download a single artifact
+      - name: Download scan artifacts
         uses: actions/download-artifact@v4
         with:
           name: allstar-artifacts
-      - name: Confirm artifact
-        run:  grep '^{}' $GITHUB_WORKSPACE/allstar.log | head 
-      - name: Summarize Results
+      - name: Make artifacts directory
+        run: mkdir $ARTIFACT_DIR
+      - name: Summarize Results by Check
         run: |
           grep '^{' $GITHUB_WORKSPACE/allstar.log | 
             jq --slurp \
             '[.[] | select(.enabled == true and
             .message == "Policy run result." and .result == false) ] |
-            [ group_by(.area)[] | {(.[0].area): [ .[] | .repo]}]' 
+            [ group_by(.area)[] | {(.[0].area): [ .[] | .repo]}]' | tee $ARTIFACT_DIR/scan_results_by_check.json
+      - name: Summarize Results by Repository
+        run: |
+          grep '^{' $GITHUB_WORKSPACE/allstar.log | 
+            jq --slurp \
+            '[.[] | select(.enabled == true and
+            .message == "Policy run result." and .result == false) ] |
+            [ group_by(.repo)[] | {(.[0].repo): [ .[] | .area]}]' | tee $ARTIFACT_DIR/scan_results_by_repo.json
