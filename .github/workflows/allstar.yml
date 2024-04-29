@@ -20,8 +20,8 @@ on:
 
 env:
   ARTIFACT_DIR: /tmp/artifacts
-  upload_artifact_version: 5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1  
-  download_artifact_version: 65a9edc5881444af0b9093a5e628f2fe47ea3b2e # @4.1.7
+  UPLOAD_ARTIFACT_VERSION: 5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1  
+  DOWNLOAD_ARTIFACT_VERSION: 65a9edc5881444af0b9093a5e628f2fe47ea3b2e # @4.1.7
 
 jobs:
   scan:
@@ -50,7 +50,7 @@ jobs:
         run: | 
           /ko-app/allstar -once > >(tee -a $ARTIFACT_DIR/allstar.out) 2> >(tee -a $ARTIFACT_DIR/allstar.log >&2);
       - name: Archive AllStar Results
-        uses: actions/upload-artifact@${{ env.upload_artifact_version }}
+        uses: actions/upload-artifact@${UPLOAD_ARTIFACT_VERSION} 
         with:
           name: allstar-scan
           path: ${{ env.ARTIFACT_DIR }}
@@ -61,7 +61,7 @@ jobs:
     environment: prod
     steps:
       - name: Download scan artifacts
-        uses: actions/download-artifact@{{ env.download_artifact_version }}
+        uses: actions/download-artifact@${DOWNLOAD_ARTIFACT_VERSION} 
         with:
           name: allstar-scan
       - name: Make artifacts directory
@@ -90,7 +90,7 @@ jobs:
               })' | 
             tee $ARTIFACT_DIR/scan_results_by_repo.jso      
       - name: Archive AllStar Results
-        uses: actions/upload-artifact@${{ env.upload_artifact_version }}
+        uses: actions/upload-artifact@${UPLOAD_ARTIFACT_VERSION} 
         with:
           name: allstar-results
           path: ${{ env.ARTIFACT_DIR }}
