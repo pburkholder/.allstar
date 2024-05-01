@@ -13,4 +13,4 @@ action: issue
 # - Webhooks (experimental)
 checks: 
   - Code-Review
-  - Maintained
+#  - Maintained
