@@ -1,8 +1,8 @@
 # We could verify the AllStar image with something like:
 #   cosign verify ghcr.io/ossf/allstar:v4.0-busybox \
-#     --certificate-identity-regexp  "https://github.com/ossf/allstar/.github/workflows/release.yaml"  
+#     --certificate-identity-regexp  "https://github.com/ossf/allstar/.github/workflows/release.yaml"
 #     --certificate-oidc-issuer https://token.actions.githubusercontent.com
-# but it's a fairly uninteresting verification since it only shows the image was 
+# but it's a fairly uninteresting verification since it only shows the image was
 # generated through GitHub Actions, not signed by one of the committers.
 # More: https://github.blog/2021-12-06-safeguard-container-signing-capability-actions/
 ---
@@ -25,13 +25,12 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     # Use chainguard/busybox based image - It has a tail for entrypoint
-    container: 
+    container:
       # specifying allstar by sha since tags are mutable. we don't verify the signature (see above)
-      image: ghcr.io/ossf/allstar@sha256:1f3b9d7bf8490f17f1c114781085a92124e187c7e59db53b1e8a996d85c36445 # v4.0-busybox
+      image: ghcr.io/ossf/allstar@sha256:b9a32c3f54f3e96aa06003eb48acb9d4c32a70b5ec49bdc4f91b942b32b14969 # v4.1-busybox
       # Running as root within unprivileged container does not violate STIGs, etc.
       options: --user root
     environment: prod
-    
     steps:
       - name: Create Artifact Directory
         run: mkdir $ARTIFACT_DIR
@@ -45,10 +44,10 @@ jobs:
           APP_ID: ${{ vars.APP_ID }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         # AllStar emits logs on stderr, not stdout
-        run: | 
+        run: |
           /ko-app/allstar -once > >(tee -a $ARTIFACT_DIR/allstar.out) 2> >(tee -a $ARTIFACT_DIR/allstar.log >&2);
       - name: Archive AllStar Results
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1  
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1
         with:
           name: allstar-scan
           path: ${{ env.ARTIFACT_DIR }}
@@ -66,7 +65,7 @@ jobs:
         run: mkdir $ARTIFACT_DIR
       - name: Summarize Results by Check
         run: |
-          grep '^{' $GITHUB_WORKSPACE/allstar.log | 
+          grep '^{' $GITHUB_WORKSPACE/allstar.log |
             jq --slurp '[.[] | select(.enabled == true and .message == "Policy run result.") ] |
               group_by(.area) | map({
                 area: .[0].area,
@@ -75,11 +74,12 @@ jobs:
                   fail_count: map(select(.result == false)) | length,
                   passed: map(select(.result == true)| .repo),
                   failed: map(select(.result == false)| .repo)
-                }})' |
+                }
+              })' |
             tee $ARTIFACT_DIR/scan_results_by_check.json
       - name: Summarize Results by Repository
         run: |
-          grep '^{' $GITHUB_WORKSPACE/allstar.log | 
+          grep '^{' $GITHUB_WORKSPACE/allstar.log |
             jq --slurp '[.[] | select(.enabled == true and .message == "Policy run result.") ] |
               group_by(.repo) | map({
                 repository: .[0].repo,
@@ -89,17 +89,10 @@ jobs:
                   passed: map(select(.result == true)| .area),
                   failed: map(select(.result == false)| .area)
                 }
-              })' | 
+              })' |
             tee $ARTIFACT_DIR/scan_results_by_repo.json
-      - name: Create Badge
-        run: echo "<svg xmlns='http://www.w3.org/2000/svg' width='96' height='20'><linearGradient id='b' x2='0' y2='100%'><stop offset='0' stop-color='#bbb' stop-opacity='.1'/><stop offset='1' stop-opacity='.1'/></linearGradient><mask id='a'><rect width='96' height='20' rx='3' fill='#fff'/></mask><g mask='url(#a)'><path fill='#555' d='M0 0h41v20H0z'/><path fill='#4c1' d='M41 0h55v20H41z'/><path fill='url(#b)' d='M0 0h96v20H0z'/></g><g fill='#fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'><text x='20.5' y='15' fill='#010101' fill-opacity='.3'>workflow</text><text x='20.5' y='14'>workflow</text><text x='68' y='15' fill='#010101' fill-opacity='.3'>passed</text><text x='68' y='14'>passed</text></g></svg>" > badge.svg
-      - name: Publish badge.svg
-        uses: actions/upload-artifact@v2
-        with:
-          name: badge
-          path: badge.svg
       - name: Archive AllStar Results
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1  
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # @4.3.1
         with:
           name: allstar-results
           path: ${{ env.ARTIFACT_DIR }}
